@@ -46,4 +46,5 @@ Return => 4
 * Style Css pour la todolist : http://todomvc.com/examples/vue/
 * Chaine YT : https://www.youtube.com/c/learncodeacademy/featured
 * Cours et Tutos : https://www.grafikart.fr/tutoriels/vuejs
+* Test Algorithmie JS : https://www.freecodecamp.org/learn/javascript-algorithms-and-data-structures/basic-algorithm-scripting/return-largest-numbers-in-arrays
 
