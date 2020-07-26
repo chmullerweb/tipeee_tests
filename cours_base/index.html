@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css">
+    <style>
+        .main.container {
+            padding-top: 50px;
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <div class="ui inverted fixed menu">
+        <div class="header item">Tutorial</div>
+    </div>
+    <!-- Vue doit être eglobé dans un élément identifié par un id -->
+    <div class="ui main container" id="app">
+        <!-- Afficher une variable -->
+        <h1>{{ message }}</h1>
+        <!-- Afficher un attribut déterminé via vue.js = v-bind: ou :attribut -->
+        <a v-bind:href="link" :title="message">{{message}}</a>
+        <ul>
+            <!-- Afficher une liste d'élément contenu dans ma vue-->
+            <li v-for="membre in famille">{{ membre }} </li>
+        </ul>
+        <!-- Ajouter un membre à ma famille -->
+        <button v-on:clic="addMembre">Ajouter un membre</button>
+        <!-- Modifier le contenu de la variable via le DOM -->
+        <input type="text" v-model="message">
+        <hr>
+
+        <!-- Montre/Cache un élement - si checké alors la variable existe, sinon elle revoie false (donc else est lu si défini sinon l'output sera vide) -->
+        <br><br>
+        <label for="">Coche la case pour lancer l'enregistrement</label>
+        <!-- v-model faire référence à la variable à laquelle se lier -->
+        <input type="checkbox" v-model="display">
+        <!-- Afficher le message si la variable vérifiée renvoie true -->
+        <div class="ui success message" v-if="display">
+            <p>L'enregistrement est en cours !</p>
+        </div>
+        <hr>
+        <!-- Montre/Cache un élement - si checké alors la variable existe, sinon elle revoie false (donc else est lu si défini sinon l'output sera vide) -->
+        <br><br>
+        <label for="">Coche la case pour afficher le message Sucess / Décoche pour le message Error</label>
+        <input type="checkbox" v-model="success">
+        <!-- Afficher le message si la variable vérifiée renvoie true -->
+        <div class="ui success message" v-if="success">
+            <!-- Ecouter un évènement puis appeler une méthode/action crée dans ma vue = v-on: ou @ -->
+            <i class="close icon" v-on:click="close"></i>
+            <p>Bravo votre enregistrement marche !</p>
+        </div>
+        <!-- Si la variable renvoie false, alors j'affiche ce message-->
+        <div class="ui error message" v-else>
+            <p> Oups ! ça ne marche plus</p>
+        </div>
+        <hr>
+
+        <br><br>
+        <p>En cliquant sur la croix, la variable success passera à false et le message disparaitra</p>
+        <div class="ui success message" v-if="success">
+            <!-- Ecouter un évènement puis appeler une méthode/action crée dans ma vue = v-on: ou @ -->
+            <i class="close icon" v-on:click="close"></i>
+            <p>Bravo votre enregistrement marche !</p>
+        </div>
+        <hr>
+
+        <!-- Modifier la class selon la valeur d'une propriété de vue
+        >> :class est un objet de vue.js qui comprend en clé le nom de la class css et en valeur la condition.
+        >> Ici la class success est attribuée si la variable sucess renvoie true. Sinon, ce sera error -->
+        <br><br>
+        <p>J'interviens sur la class css de mon élément</p>
+        <label for="">Cochée, la couleur est verte - Décochée, la couleur passe au rouge</label>
+        <input type="checkbox" v-model="success">
+        <div class="ui message" :class="{success: success, error: !success}">
+            <p>{{message}}</p>
+        </div>
+
+        <h3>Je découvre les propriétés combinées </h3>
+        <p>
+            Prénom : {{ firstname }} <br>
+            Nom : {{ lastname }} <br>
+            Nom Complet : {{ fullname }} <br>
+            <input type="text" v-model="fullname"/> <br>
+            <!-- v-model.lazy = contenu de l'input est modifié dès que la saisie est terminée -->
+            Ville : <input type="text" v-model.lazy="ville"/> {{ville}} <br>
+            <!-- v-model.number = contenu de l'input attendu est un chiffre -->
+            Code Postal : <input type="number" v-model.number="cp"/> {{cp}} <br>
+            
+            <!-- @keyup. = la saisie est validée dès qu'une touche est tapée. Ici espace avec .space -->
+            Pays : <input type="text" v-model="pays" @keyup.space="demo"/> {{pays}} <br>
+
+            Claim : <input type="text" v-salut.a.b="claim"/> {{claim}} <br>
+            Claim : <input type="text" v-model="claim"/> {{claim}} <br>
+        </p>
+        <p>
+                <!-- @click.prevent.stop : annule uniquement cet évènement. Ici la redirection -->
+                <!-- @click.self : ajoute un détecteur à cet élément précis. Ici si je clique sur ce lien précis -->
+            <a href="http://descodeuses.org" @click.prevent="demo">Démonstration</a>   
+        </p>
+        
+        <h3>Les filtres pour modifier la variable</h3>
+        <p>{{ message | capitalize('aze', 'popo') | reverse }}</p>
+
+        <h3>Créer un Composant</h3>
+        <div class="ui main container">
+            <!-- Je crée un évènement personnalisé avec @close propre à mon component biographie -->
+        <biographie type="error" :biographie="biographie" header="Attention" v-if="alert" @close="hideAlert"></biographie>
+        <button @click="showAlert" v-if="!alert">Alerter</button>
+        <counter></counter>
+        <counter :start="3"></counter>
+
+        <!-- Je crée un composant form-user -->
+        <form-user v-model="user">
+            <div slot="header">Lorem ipsum dolor sit amet consectetur adipisicing elit. Repudiandae iusto aliquid asperiores optio provident ex!</div>
+            <div slot="footer">Lorem ipsum dEos, harum voluptatum? Corrupti sunt deserunt ut facere nemo blanditiis ex!</div>
+        </form-user>
+        </div>
+
+
+
+
+    </div>
+
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.11/vue.js"></script>
+    <script src="app.js"></script>
+
+
+
+</body>
+
+</html>

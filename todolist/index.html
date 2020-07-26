@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="style.css">
+  <title>To Do List</title>
+</head>
+
+<body>
+  <section class="todoapp" id="app">
+    <header class="header">
+      <h1>To Do List</h1>
+      <input type="text" class="new-todo" v-model="newToDo" placeholder="Entrez une tâche" @keyup.enter="addToDo">
+    </header>
+    <div class="main">
+      <input type="checkbox" class="toggle-all" id="toggle-all" v-model="allDone" />
+      <!-- Label nécessaire pour faire fonction le check de l'input précédent -->
+      <label for="toggle-all">Mark all as complete</label>
+      <ul class="todo-list">
+        <li class="todo" v-for="item in filteredTodos" :key="item.name"
+          :class="{completed: item.completed, editing: item === editing}">
+          <div class="view">
+            <input type="checkbox" v-model="item.completed" class="toggle" />
+            <label @dblclick="editTodo(item)">{{ item.name }}</label>
+            <button class="destroy" @click.prevent="deleteTodo(item)"></button>
+          </div>
+          <!--  @blur="doneEdit" - bug la saisie  -->
+          <input type="text" class="edit" v-model="item.name" @keyup.enter="doneEdit" @keyup.esc="cancelEdit"
+            v-focus="item === editing">
+        </li>
+    </div>
+    </ul>
+    </div>
+    <footer class="footer" v-show="hasTodos">
+      <span class="todo-count"><strong>{{ remaining }}</strong> tâches à faire</span>
+      <ul class="filters">
+        <li><a href="#" :class="{selected: filter === 'all'}" @click.prevent="filter = 'all'">Toutes</a></li>
+        <li><a href="#" :class="{selected: filter === 'todo'}" @click.prevent="filter = 'todo'">A faire</a></li>
+        <li><a href="#" :class="{selected: filter === 'done'}" @click.prevent="filter = 'done'">Faîtes</a></li>
+      </ul>
+      <button class="clear-completed" v-show="todoCompleted" @click.prevent="deleteCompleted">Supprimer tâches
+        faîtes</button>
+    </footer>
+  </section>
+
+
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  <script src="app.js"></script>
+
+</body>
+
+</html>
